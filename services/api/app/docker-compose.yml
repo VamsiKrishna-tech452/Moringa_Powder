@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+
+    container_name: moringa-api
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./services/api:/app
+
+    env_file:
+      - ./services/api/.env
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+
+    container_name: moringa-db
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: moringa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

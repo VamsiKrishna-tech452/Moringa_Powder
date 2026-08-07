@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile
+
+    container_name: lead-platform-api
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./services/api:/app
+
+    env_file:
+      - ./services/api/.env
+
+    depends_on:
+      - db
+
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:16
+
+    container_name: lead-platform-db
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: lead_platform
+      POSTGRES_USER: lead_user
+      POSTGRES_PASSWORD: lead_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
