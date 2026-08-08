@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.db.session import SessionLocal
 
 app = FastAPI(
-    title="Global Lead Intelligence Platform",
+    title="Global Moringa Distributor Intelligence Platform",
     version="0.1.0",
 )
 
