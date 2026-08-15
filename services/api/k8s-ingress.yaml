@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lead-api-ingress
+  namespace: lead-intelligence
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: leads.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lead-api
+                port:
+                  number: 8000

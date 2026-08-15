@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from sqlalchemy import text
 
+from app.api.v1.dashboard import router as dashboard_router
+from app.api.v1.distributors import router as distributor_router
 from app.db.session import SessionLocal
+from app.api.v1.leads import router as lead_router
+
 
 app = FastAPI(
     title="Global Moringa Distributor Intelligence Platform",
@@ -9,10 +13,26 @@ app = FastAPI(
 )
 
 
+app.include_router(
+    distributor_router,
+    prefix="/api/v1",
+)
+
+app.include_router(
+    lead_router,
+    prefix="/api/v1",
+)
+
+app.include_router(
+    dashboard_router,
+    prefix="/api/v1",
+)
+
+
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to Global Lead Intelligence Platform"
+        "message": "Welcome to Global Moringa Distributor Intelligence Platform"
     }
 
 
@@ -25,14 +45,14 @@ def health():
 
         return {
             "status": "healthy",
-            "database": "connected"
+            "database": "connected",
         }
 
     except Exception as e:
         return {
             "status": "unhealthy",
             "database": "disconnected",
-            "error": str(e)
+            "error": str(e),
         }
 
     finally:
